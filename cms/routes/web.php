@@ -76,11 +76,37 @@ Route::get('/post/{id}', [PostController::class, 'show_post']);
 //    $post->save();
 //});
 
-Route::get('/basicupdate', function (){
-    $post = Post::find(4);
+//Route::get('/basicupdate', function (){
+//    $post = Post::find(4);
+//
+//    $post->title = "New Eloquent title inserted 2";
+//    $post->body = "Wow eloquent is really cool, look at this content 2";
+//
+//    $post->save();
+//});
 
-    $post->title = "New Eloquent title inserted 2";
-    $post->body = "Wow eloquent is really cool, look at this content 2";
+//Route::get('/create', function (){
+//    Post::create(['title'=>'The Create Method', 'body' => 'I am learning a lot in laravel.']);
+//});
 
-    $post->save();
+//Route::get('/update', function (){
+//    Post::where('id', 2)->where('is_admin', 0)->update(['title'=>'New PHP title', 'body'=>'I love Myself.']);
+//});
+
+//Route::get('/delete', function (){
+//    $post = Post::find(2);
+//
+//    $post->delete();
+//});
+
+//Route::get('/delete2', function (){
+//    Post::destroy(3);
+//});
+
+//Route::get('/deletemass', function (){
+//    Post::destroy([4,5]);
+//});
+
+Route::get('', function (){
+
 });
