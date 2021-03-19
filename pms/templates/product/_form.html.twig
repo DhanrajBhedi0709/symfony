@@ -1,4 +1,70 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">Product Details</div>
+            <div class="card-body">
+                {{ form_start(form, {'enctype': 'multipart/form-data'}) }}
+                <input type="hidden" name="id">
+                <div class="form-group">
+                    {{ form_label(form.Name) }}
+                    {{ form_widget(form.Name, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Name'}}) }}
+                    <font color="red">{{ form_errors(form.Name) }}</font>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.Category) }}
+                    {{ form_widget(form.Category, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Category'}}) }}
+                    <font color="red">{{ form_errors(form.Category) }}</font>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.Price) }}
+                            {{ form_widget(form.Price, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Price'}}) }}
+                            <font color="red">{{ form_errors(form.Price) }}</font>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.Quantity) }}
+                            {{ form_widget(form.Quantity, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Quantity'}}) }}
+                            <font color="red">{{ form_errors(form.Quantity) }}</font>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.Short_Description) }}
+                    {{ form_widget(form.Short_Description, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Short Description'}}) }}
+                    <font color="red">{{ form_errors(form.Short_Description) }}</font>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.Long_Description) }}
+                    {{ form_widget(form.Long_Description, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Long Description'}}) }}
+                    <font color="red">{{ form_errors(form.Long_Description) }}</font>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.Small_img) }}
+                            {{ form_widget(form.Small_img, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Small Image'}}) }}
+                            <font color="red">{{ form_errors(form.Small_img) }}</font>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.Large_img) }}
+                            {{ form_widget(form.Large_img, {'attr': {'class': 'form-control', 'placeholder' : 'Enter Product Large Image'}}) }}
+                            <font color="red">{{ form_errors(form.Large_img) }}</font>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                    <a href="{{ path('product_index') }}" class="btn btn-danger">Cancel</a>
+                </div>
+                {{ form_end(form) }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

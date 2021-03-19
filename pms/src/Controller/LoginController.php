@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LoginController extends AbstractController
 {
@@ -24,10 +25,11 @@ class LoginController extends AbstractController
     /**
      * @Route("/login", name="login_check", methods={"POST"})
      */
-    public function loginCheck(Request $request): RedirectResponse
+    public function loginCheck(Request $request, SessionInterface $session): RedirectResponse
     {
         $result = $this->getDoctrine()->getRepository(User::class)->findBy(['username' => $request->get('email'), 'password' => $request->get('password')]);
         if($result) {
+            $session->set('user', $result[0]->getUsername());
             return $this->redirectToRoute('dashboard_index');
         } else {
             return $this->redirectToRoute('login_index');

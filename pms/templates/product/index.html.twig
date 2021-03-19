@@ -3,46 +3,92 @@
 {% block title %}Product index{% endblock %}
 
 {% block content %}
-    <h1>Product index</h1>
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Products</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Short_Description</th>
-                <th>Long_Description</th>
-                <th>Small_img</th>
-                <th>Large_img</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.Name }}</td>
-                <td>{{ product.Category }}</td>
-                <td>{{ product.Price }}</td>
-                <td>{{ product.Quantity }}</td>
-                <td>{{ product.ShortDescription }}</td>
-                <td>{{ product.LongDescription }}</td>
-                <td>{{ product.SmallImg }}</td>
-                <td>{{ product.LargeImg }}</td>
-                <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Short_Description</th>
+                        <th>Small_img</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Short_Description</th>
+                        <th>Small_img</th>
+                        <th>actions</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.Name }}</td>
+                            <td>{{ product.Category }}</td>
+                            <td>{{ product.Price }}</td>
+                            <td>{{ product.ShortDescription }}</td>
+                            <td><img src="{{ asset(product.SmallImg) }}" alt="Small Image" width="100px"/></td>
+                            <td>
+                                <a href="{{ path('product_show', {'id': product.id}) }}">Show</a>
+                                <a href="{{ path('product_edit', {'id': product.id}) }}">Edit</a>
+                                {{ include('product/_delete_form.html.twig') }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>no records found</td>
+                        </tr>
+                    {% endfor %}
 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    <!-- Page level plugins -->
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+    <script src="{{ asset('Scripts/alertify/alertify.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+            $('#checkBoxAll').click(function () {
+                if ($(this).is(":checked")) {
+                    $(".chkCheckBoxId").prop("checked", true)
+                } else {
+                    $(".chkCheckBoxId").prop("checked", false)
+                }
+            });
+        });
+    </script>
+    <script>
+        // $(function () {
+        //     var msg = '@TempData["msg"]'
+        //     if (msg != "") {
+        //         alertify.success(msg);
+        //     }
+        // });
+
+        function Submit() {
+            document.deleteForm.Submit();
+        }
+    </script>
 {% endblock %}
