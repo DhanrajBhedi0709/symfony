@@ -61,8 +61,26 @@ Route::get('/post/{id}', [PostController::class, 'show_post']);
 //    return $post;
 //});
 
-Route::get('/findmore', function (){
-    $posts = Post::findOrFail(2);
+//Route::get('/findmore', function (){
+//    $posts = Post::findOrFail(2);
+//
+//    return $posts;
+//});
 
-    return $posts;
+//Route::get('/basicinsert', function (){
+//    $post = new Post;
+//
+//    $post->title = "New Eloquent title inserted";
+//    $post->body = "Wow eloquent is really cool, look at this content";
+//
+//    $post->save();
+//});
+
+Route::get('/basicupdate', function (){
+    $post = Post::find(4);
+
+    $post->title = "New Eloquent title inserted 2";
+    $post->body = "Wow eloquent is really cool, look at this content 2";
+
+    $post->save();
 });
