@@ -36,4 +36,14 @@ class LoginController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/logout", name="logout", methods={"GET"})
+     */
+
+    public function logout(SessionInterface $session): RedirectResponse
+    {
+        $session->remove('user');
+        return $this->redirectToRoute('login_index');
+    }
+
 }

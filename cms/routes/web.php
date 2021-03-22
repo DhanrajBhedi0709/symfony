@@ -1,9 +1,14 @@
 <?php
 
+use App\Models\Tag;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\DB;
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Country;
+use App\Models\Photo;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +21,7 @@ use App\Models\Post;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/post/{id}', [PostController::class, 'show_post']);
+//Route::get('/post/{id}', [PostController::class, 'show_post']);
 
 //Route::get('/insert', function () {
 //    DB::insert('insert into posts(title, body) values (?, ?)', ['PHP with Laravel', 'PHP Laravel is the best thing that has happened to PHP.']);
@@ -61,52 +62,103 @@ Route::get('/post/{id}', [PostController::class, 'show_post']);
 //    return $post;
 //});
 
-//Route::get('/findmore', function (){
-//    $posts = Post::findOrFail(2);
+Route::get('/findmore', function (){
+    $posts = Post::findOrFail(2);
+
+    return $posts;
+});
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+/*
+ * ELOQUENT RELATIONSHIPS
+ *
+ */
 //
-//    return $posts;
+//Route::get('/user/{id}/post', function($id){
+//    return User::find($id)->post;
 //});
-
-//Route::get('/basicinsert', function (){
-//    $post = new Post;
 //
-//    $post->title = "New Eloquent title inserted";
-//    $post->body = "Wow eloquent is really cool, look at this content";
+//Route::get('/post/{id}/user', function($id){
+//   return Post::find($id)->user;
+//});
+
+//One to Many Relationship
+
+//Route::get('/posts', function(){
+//    $user = User::find(1);
 //
-//    $post->save();
+//    foreach($user->posts as $post){
+//        echo $post->title . '<br>';
+//    }
 //});
 
-//Route::get('/basicupdate', function (){
-//    $post = Post::find(4);
+//Many to Many
+
+Route::get('user/{id}/role', function ($id){
+    $user = User::find($id)->roles()->orderBy('id','desc')->get();
+
+    return $user;
+
+//    foreach ($user->roles as $role) {
+//        return $role->name;
+//    }
+});
+
+//Accessing intermediate table
+
+Route::get('/user/pivot', function (){
+    $user = User::find(1);
+
+    foreach ($user->roles as $role) {
+        return $role->pivot;
+    }
+});
+
+Route::get('/user/country', function(){
+    $country = Country::find(2);
+
+    foreach ($country->posts as $post) {
+        return $post->title;
+    }
+});
+
+/*
+ * Polymorphic Relationships
+ */
+
+//Route::get('/post/{id}/photos', function ($id){
+//   $post = Post::find($id);
 //
-//    $post->title = "New Eloquent title inserted 2";
-//    $post->body = "Wow eloquent is really cool, look at this content 2";
-//
-//    $post->save();
+//   foreach ($post->photos as $photo)
+//   {
+//       echo $photo->path;
+//   }
 //});
 
-//Route::get('/create', function (){
-//    Post::create(['title'=>'The Create Method', 'body' => 'I am learning a lot in laravel.']);
-//});
+Route::get('/photo/{id}/post', function ($id){
+    $photo = Photo::findOrFail($id);
+    return $photo->imagable;
 
-//Route::get('/update', function (){
-//    Post::where('id', 2)->where('is_admin', 0)->update(['title'=>'New PHP title', 'body'=>'I love Myself.']);
-//});
 
-//Route::get('/delete', function (){
-//    $post = Post::find(2);
-//
-//    $post->delete();
-//});
+});
 
-//Route::get('/delete2', function (){
-//    Post::destroy(3);
-//});
+//Polymorphic Many to Many
 
-//Route::get('/deletemass', function (){
-//    Post::destroy([4,5]);
-//});
+Route::get('/post/tag', function (){
+   $post =  Post::find(1);
 
-Route::get('', function (){
+   foreach ($post->tags as $tag) {
+       return $tag->name;
+   }
+});
 
+Route::get('/img/post', function (){
+    $tag = Tag::find(2);
+
+    foreach ($tag->posts as $post) {
+        echo $post;
+    }
 });
