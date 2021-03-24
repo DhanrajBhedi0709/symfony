@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome to Blogger!{% endblock %}</title>
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+        {% block stylesheets %}
+            {#{{ encore_entry_link_tags('app') }}#}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <style>
+                .footer {
+                    width: 100%;
+                    padding: 25px;
+                    bottom: 0;
+                }
+            </style>
+        {% endblock %}
+
+        {% block javascripts %}
+            {#{{ encore_entry_script_tags('app') }}#}
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        {% endblock %}
+    </head>
+    <body>
+        {% block header %}
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="{{ path("blog_home") }}">Blogger</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse " id="navbarNav">
+                    <ul class="navbar-nav ">
+                        {% if(app.user) %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disable" href="{{ path("app_logout") }}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path("app_login") }}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path("app_register") }}">Register</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        {% endblock %}
+        <div class="container" style="padding: 20px; margin: 0;">
+            <div class="row">
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+        {% block footer %}
+            <footer class="bg-dark footer" >
+                <div class="text-center text-light">
+                    © 2020 Copyright:
+                    <a >Blogger.com</a>
+                </div>
+
+            </footer>
+        {% endblock %}
+    </body>
+</html>
