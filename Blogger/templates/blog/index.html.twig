@@ -9,7 +9,7 @@
 
             <div class="col-md-6">
                 <div class="post">
-                    <a class="post-img" href="blog-post.html"><img src="{{ asset('img/post-1.jpg') }}" alt=""></a>
+                    <a class="post-img" href="{{ path('blog_show', {'slug' : post.slug}) }}"><img src="{{ asset('img/post-1.jpg') }}" alt=""></a>
                     <div class="post-body">
                         <div class="post-category">
                             <a href="{{ path('blog_index', {'tag' : post.tags}) }}">{{ post.tags }}</a>

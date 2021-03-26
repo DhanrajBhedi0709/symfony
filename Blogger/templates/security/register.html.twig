@@ -6,20 +6,27 @@
     {% block sidebar %}
     {% endblock %}
     {% block content %}
-        {% for flashError in app.flashes('verify_email_error') %}
-            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-        {% endfor %}
+        <br><br>
+        <div class="container">
+            {% for flashError in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+            {% endfor %}
 
+            {{ form_start(registrationForm) }}
+                <div class="form-group">
+                    {{ form_row(registrationForm.name) }}</div>
+                <div class="form-group">
+                    {{ form_row(registrationForm.email) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(registrationForm.password, {
+                    label: 'Password'
+                }) }}
+                </div>
 
-
-        {{ form_start(registrationForm) }}
-            {{ form_row(registrationForm.name) }}
-            {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.password, {
-                label: 'Password'
-            }) }}
-
-            <button type="submit" class="btn">Register</button>
-        {{ form_end(registrationForm) }}
+                <button type="submit" class="btn btn-success">Register</button>
+            {{ form_end(registrationForm) }}
+        </div>
+        <br>
     {% endblock %}
 {% endblock %}

@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="col-md-8">
+        {% if posts|length %}
         <table class="table">
             <thead>
             <tr>
@@ -17,21 +18,20 @@
                     <td>{{ post.publishedAt|format_datetime('medium', 'short', '', 'UTC') }}</td>
                     <td class="text-right">
                         <div class="item-actions">
-                            <a href="" class="btn btn-default">
+                            <a href="{{ path('admin_blog_show', {'slug' : post.slug}) }}" class="btn btn-default">
                                 <i class="fa fa-eye" aria-hidden="true"></i> Show
                             </a>
-                            <a href="" class="btn btn-primary">
+                            <a href="{{ path('admin_blog_edit', {'id' : post.id}) }}" class="btn btn-primary">
                                 <i class="fa fa-edit" aria-hidden="true"></i> Edit
                             </a>
                         </div>
                     </td>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4" align="center">No Post Found</td>
-                </tr>
             {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <strong>No Post Found</strong>
+        {% endif %}
     </div>
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\Post;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,15 +25,16 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', null, [
-                'attr' => ['autofocus' => true],
+            ->add('title', TextType::class, [
+                'attr' => ['autofocus' => true, 'class' => 'form-control'],
                 'label' => 'Title',
             ])
             ->add('summary', TextareaType::class, [
                 'label' => 'Summary',
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('content', TextareaType::class, [
-                'attr' => ['rows' => 10],
+                'attr' => ['rows' => 10, 'class' => 'form-control'],
                 'label' => 'Content',
             ])
             ->add('tags',  ChoiceType::class, [
@@ -41,6 +43,7 @@ class PostType extends AbstractType
                     'Technology' => 'technology',
                     'News' => 'news',
                 ],
+                'attr' => ['class' => 'form-control'],
             ])
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var Post */

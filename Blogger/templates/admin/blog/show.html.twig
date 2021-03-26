@@ -1,0 +1,37 @@
+{% extends 'layout/dashboard.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+
+    <div id="post-header" class="page-header">
+        <div class="page-header-bg" style="background-image: url({{ asset('img/header-1.jpg') }});" data-stellar-background-ratio="0.5"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="post-category">
+                        <a href="">{{ post.tags }}</a>
+                    </div>
+                    <h1>{{ post.title }}</h1>
+                    <ul class="post-meta">
+                        {#                        <li><a href="">John Doe</a></li>#}
+                        <li>{{ post.publishedAt ? post.publishedAt|date('d M Y') : '' }}</li>
+                        {#                        <li><i class="fa fa-comments"></i> 3</li>#}
+                        {#                        <li><i class="fa fa-eye"></i> 807</li>#}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-8">
+
+        <div class="section-row">
+            <h3>{{ post.summary }}</h3>
+            {{ post.content }}
+        </div>
+    </div>
+{% endblock %}
