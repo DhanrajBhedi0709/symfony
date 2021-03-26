@@ -1,25 +1,41 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% block sidebar %}
-        <div class="col-md-3">
-            <div class="card" style="box-shadow: 0px 0px 2px #aaaaaa;">
-                <div class="card-body">
-                    <ul>
-                        <li>
-                            Post A Blog
-                        </li>
-                        <li>
-                            My Blog Post
-                        </li>
-                        <li>
-                            Posts I Commented On
-                        </li>
-                    </ul>
-                </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                {% block sidebar %}
+                    <div class="col-md-4">
+
+                        <!-- category widget -->
+                        <div class="aside-widget">
+                            <div class="section-title">
+                                <h2 class="title">Navigations</h2>
+                            </div>
+                            <div class="category-widget">
+                                <ul>
+                                    <li>
+                                        <a href="">Post A Blog</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('dashboard') }}">My Blog Post</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Posts I Commented On</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /category widget -->
+                    </div>
+                {% endblock %}
+                {% block content %}
+                {% endblock %}
             </div>
+            <!-- /row -->
         </div>
-    {% endblock %}
-    {% block content %}
-    {% endblock %}
+        <!-- /container -->
+    </div>
 {% endblock %}

@@ -1,29 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-     {% block sidebar %}
-          <div class="col-md-3">
-               <div class="card">
-                    <div class="card-body">
-                         <h4 style="margin-left: 15px;">Category</h4>
-                         <ul>
-                              <li>
-                                   Category
-                              </li>
-                              <li>
-                                   Category
-                              </li>
-                              <li>
-                                   Category
-                              </li>
-                              <li>
-                                   Category
-                              </li>
-                         </ul>
-                    </div>
+     <div class="section">
+          <!-- container -->
+          <div class="container">
+               <!-- row -->
+               <div class="row">
+                    {% block sidebar %}
+                         <div class="col-md-4">
+
+                              <!-- category widget -->
+                              <div class="aside-widget">
+                                   <div class="section-title">
+                                        <h2 class="title">Categories</h2>
+                                   </div>
+                                   <div class="category-widget">
+                                        <ul>
+                                             <li><a href="{{ path('blog_index', {'tag' : 'technology'}) }}">Technology</a></li>
+                                        </ul>
+                                   </div>
+                              </div>
+                              <!-- /category widget -->
+                         </div>
+                    {% endblock %}
+                    {% block content %}
+                    {% endblock %}
                </div>
+               <!-- /row -->
           </div>
-     {% endblock %}
-     {% block content %}
-     {% endblock %}
+          <!-- /container -->
+     </div>
 {% endblock %}

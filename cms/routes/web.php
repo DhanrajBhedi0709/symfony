@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostsController;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -62,15 +63,15 @@ use App\Models\Photo;
 //    return $post;
 //});
 
-Route::get('/findmore', function (){
-    $posts = Post::findOrFail(2);
-
-    return $posts;
-});
-
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/findmore', function (){
+//    $posts = Post::findOrFail(2);
+//
+//    return $posts;
+//});
+//
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 /*
  * ELOQUENT RELATIONSHIPS
@@ -97,33 +98,33 @@ Route::get('/', function () {
 
 //Many to Many
 
-Route::get('user/{id}/role', function ($id){
-    $user = User::find($id)->roles()->orderBy('id','desc')->get();
-
-    return $user;
+//Route::get('user/{id}/role', function ($id){
+//    $user = User::find($id)->roles()->orderBy('id','desc')->get();
+//
+//    return $user;
 
 //    foreach ($user->roles as $role) {
 //        return $role->name;
 //    }
-});
+//});
 
 //Accessing intermediate table
 
-Route::get('/user/pivot', function (){
-    $user = User::find(1);
-
-    foreach ($user->roles as $role) {
-        return $role->pivot;
-    }
-});
-
-Route::get('/user/country', function(){
-    $country = Country::find(2);
-
-    foreach ($country->posts as $post) {
-        return $post->title;
-    }
-});
+//Route::get('/user/pivot', function (){
+//    $user = User::find(1);
+//
+//    foreach ($user->roles as $role) {
+//        return $role->pivot;
+//    }
+//});
+//
+//Route::get('/user/country', function(){
+//    $country = Country::find(2);
+//
+//    foreach ($country->posts as $post) {
+//        return $post->title;
+//    }
+//});
 
 /*
  * Polymorphic Relationships
@@ -138,27 +139,34 @@ Route::get('/user/country', function(){
 //   }
 //});
 
-Route::get('/photo/{id}/post', function ($id){
-    $photo = Photo::findOrFail($id);
-    return $photo->imagable;
+//Route::get('/photo/{id}/post', function ($id){
+//    $photo = Photo::findOrFail($id);
+//    return $photo->imagable;
+//
+//
+//});
+//
+////Polymorphic Many to Many
+//
+//Route::get('/post/tag', function (){
+//   $post =  Post::find(1);
+//
+//   foreach ($post->tags as $tag) {
+//       return $tag->name;
+//   }
+//});
+//
+//Route::get('/img/post', function (){
+//    $tag = Tag::find(2);
+//
+//    foreach ($tag->posts as $post) {
+//        echo $post;
+//    }
+//});
+//
 
+//Route::get('/', function(){
+//
+//});
 
-});
-
-//Polymorphic Many to Many
-
-Route::get('/post/tag', function (){
-   $post =  Post::find(1);
-
-   foreach ($post->tags as $tag) {
-       return $tag->name;
-   }
-});
-
-Route::get('/img/post', function (){
-    $tag = Tag::find(2);
-
-    foreach ($tag->posts as $post) {
-        echo $post;
-    }
-});
+Route::resource('/posts', PostsController::class);
