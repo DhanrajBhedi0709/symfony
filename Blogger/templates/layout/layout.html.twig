@@ -17,6 +17,20 @@
                                    <div class="category-widget">
                                         <ul>
                                              <li><a href="{{ path('blog_index', {'tag' : 'technology'}) }}">Technology</a></li>
+                                             <li><a href="{{ path('blog_index', {'tag' : 'news'}) }}">News</a></li>
+                                             <li><a href="{{ path('blog_index', {'tag' : 'travel'}) }}">Travel</a></li>
+                                        </ul>
+                                   </div>
+                              </div>
+                              <!-- /category widget -->
+                              <!-- category widget -->
+                              <div class="aside-widget">
+                                   <div class="section-title">
+                                        <h2 class="title">Blog Date</h2>
+                                   </div>
+                                   <div class="category-widget">
+                                        <ul>
+                                             {{ render(controller('App\\Controller\\BlogController::renderBlogDate')) }}
                                         </ul>
                                    </div>
                               </div>

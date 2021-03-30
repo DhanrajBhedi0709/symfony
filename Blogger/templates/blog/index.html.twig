@@ -4,27 +4,29 @@
     <div class="col-md-8">
         <!-- row -->
         <div class="row">
-
-            {% for post in posts %}
+            {% for post in pagination %}
 
             <div class="col-md-6">
                 <div class="post">
-                    <a class="post-img" href="{{ path('blog_show', {'slug' : post.slug}) }}"><img src="{{ asset('img/post-1.jpg') }}" alt=""></a>
+                    <a class="post-img" href="{{ path('blog_show', {'slug' : post.slug}) }}"><img src="{{ asset(post.thumbnail) }}" style="min-height: 280px;" alt=""></a>
                     <div class="post-body">
                         <div class="post-category">
                             <a href="{{ path('blog_index', {'tag' : post.tags}) }}">{{ post.tags }}</a>
                         </div>
-                        <h3 class="post-title"><a href="{{ path('blog_show', {'slug' : post.slug}) }}">{{ post.title }}</a></h3>
+                        <h3 class="post-title"><a href="{{ path('blog_show', {'slug' : post.slug}) }}">{{ post.title|length > 60 ? post.title|slice(0, 60) ~ "..." : post.title }}</a></h3>
                         <ul class="post-meta">
-{#                            <li><a href="author.html">John Doe</a></li>#}
+                            <li><a href="">{{ post.author.name }}</a></li>
                             <li>{{ post.publishedAt ? post.publishedAt|date('d M Y') : '' }}</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <!-- /post -->
+            {% else %}
+                No Post Found
             {% endfor %}
         </div>
         <!-- /row -->
+        <div style="text-align: center;">{{ knp_pagination_render(pagination) }}</div>
     </div>
 {% endblock %}

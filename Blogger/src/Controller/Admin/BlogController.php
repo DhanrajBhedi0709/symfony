@@ -4,17 +4,22 @@ namespace App\Controller\Admin;
 
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class BlogController
  * @package App\Controller
  * @Route("/admin")
+ *
+ * @IsGranted("ROLE_USER")
  */
 class BlogController extends AbstractController
 {
@@ -24,14 +29,14 @@ class BlogController extends AbstractController
     public function index(PostRepository $postRepository): Response
     {
         return $this->render('admin/blog/dashboard.html.twig', [
-            'posts' => $postRepository->findBy(['author' => $postRepository->findBy(['author' => $this->getUser()])])
+            'posts' => $postRepository->findBy(['author' => $this->getUser()])
         ]);
     }
 
     /**
      * @Route("/new", name="admin_blog_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $fileUploader): Response
     {
         $post = new Post();
         $post->setAuthor($this->getUser());
@@ -40,6 +45,13 @@ class BlogController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $thumbnail = $form->get('thumbnail')->getData();
+            if ($thumbnail) {
+                $thumbnailName = $fileUploader->upload($thumbnail);
+                $post->setThumbnail($thumbnailName);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
@@ -95,5 +107,17 @@ class BlogController extends AbstractController
         }
 
         return $this->redirectToRoute('dashboard');
+    }
+
+    /**
+     * @Route("/comment", name="admin_my_comment", methods={"GET"})
+     *
+     * @return Response
+     */
+    public function myCommentShow(PostRepository $postRepository): Response
+    {
+        return $this->render('admin/blog/my_comment_show.html.twig', [
+            'posts' => $postRepository->findByComment($this->getUser()->getId())
+        ]);
     }
 }

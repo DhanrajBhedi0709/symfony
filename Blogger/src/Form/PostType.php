@@ -7,11 +7,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Service\FileUploader;
+use Symfony\Component\Validator\Constraints\File;
 
 class PostType extends AbstractType
 {
@@ -33,17 +37,35 @@ class PostType extends AbstractType
                 'label' => 'Summary',
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('content', TextareaType::class, [
-                'attr' => ['rows' => 10, 'class' => 'form-control'],
-                'label' => 'Content',
+            ->add('content', CKEditorType::class, [
+                'config' => array(
+
+                    'showWordCount' => true
+                )
             ])
             ->add('tags',  ChoiceType::class, [
                 'choices'  => [
-                    'Movie' => 'movie',
+                    'Travel' => 'travel',
                     'Technology' => 'technology',
                     'News' => 'news',
                 ],
                 'attr' => ['class' => 'form-control'],
+            ])
+            ->add('thumbnail', FileType::class, [
+                'label' => 'Thumbnail Image',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid jpg, jpeg, png Image',
+                    ])
+                ],
             ])
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var Post */

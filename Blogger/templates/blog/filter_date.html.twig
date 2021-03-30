@@ -1,0 +1,3 @@
+{% for date in dates %}
+    <li><a href="{{ path('blog_index', {'month' : date.month, 'year' : date.year}) }}">{{ (date.year ~ "-" ~ date.month) | date("M Y") }}</a></li>
+{% endfor %}

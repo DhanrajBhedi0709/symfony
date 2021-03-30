@@ -35,7 +35,7 @@ class Post
     private $summary;
 
     /**
-     * @ORM\Column(type="string", length=1000)
+     * @ORM\Column(type="text")
      */
     private $content;
 
@@ -71,6 +71,11 @@ class Post
      * @ORM\Column(type="string", length=255)
      */
     private $tags;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $thumbnail;
 
     public function __construct()
     {
@@ -177,6 +182,18 @@ class Post
     public function setTags(string $tags): self
     {
         $this->tags = $tags;
+
+        return $this;
+    }
+
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail($thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
 
         return $this;
     }

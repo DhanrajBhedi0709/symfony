@@ -1,0 +1,34 @@
+{% extends 'layout/dashboard.html.twig' %}
+
+{% block content %}
+    <div class="col-md-8">
+        {% if posts|length %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col"><i class="fa fa-calendar" aria-hidden="true"></i> Published At</th>
+                    <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.published_at|format_datetime('medium', 'short', '', 'UTC') }}</td>
+                        <td class="text-right">
+                            <div class="item-actions">
+                                <a href="{{ path('admin_blog_show', {'slug' : post.slug}) }}" class="btn btn-default">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> Show
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <strong>No Post Found</strong>
+        {% endif %}
+    </div>
+{% endblock %}
