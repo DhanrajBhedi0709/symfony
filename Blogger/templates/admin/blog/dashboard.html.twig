@@ -35,3 +35,13 @@
         {% endif %}
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent()}}
+    <script>
+        $( document ).ready(function() {
+            $( "#footer" ).css( "bottom", "0" );
+            $( "#footer" ).css( "position", "absolute" );
+            $( "#footer" ).css( "width", "100%" );
+        });
+    </script>
+{% endblock %}

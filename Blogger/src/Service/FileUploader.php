@@ -5,6 +5,7 @@
     use Symfony\Component\HttpFoundation\File\Exception\FileException;
     use Symfony\Component\HttpFoundation\File\UploadedFile;
     use Symfony\Component\String\Slugger\SluggerInterface;
+    use Psr\Log\LoggerInterface;
 
     class FileUploader
     {
@@ -15,7 +16,7 @@
             $this->slugger = $slugger;
         }
 
-        public function upload(UploadedFile $file)
+        public function upload(UploadedFile $file, LoggerInterface $logger)
         {
             $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFilename = $this->slugger->slug($originalFilename);
@@ -24,6 +25,7 @@
             try {
                 $file->move('thumbnail', $fileName);
             } catch (FileException $e) {
+                $logger->error("Logger => " .$e->getMessage() ." code => " . $e->getCode());
                 new \Exception("File cannot be uploaded");
             }
 

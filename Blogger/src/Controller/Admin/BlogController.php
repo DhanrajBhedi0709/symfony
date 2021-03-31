@@ -36,7 +36,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/new", name="admin_blog_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileUploader $fileUploader): Response
+    public function new(Request $request, FileUploader $fileUploader ): Response
     {
         $post = new Post();
         $post->setAuthor($this->getUser());
@@ -76,14 +76,23 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="admin_blog_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_blog_edit", methods={"GET","POST"}, requirements={"id":"\d+"})
      */
-    public function edit(Request $request, Post $post): Response
+    public function edit(Request $request, Post $post, FileUploader $fileUploader): Response
     {
+        if($post->getAuthor()->getId() != $this->getUser()->getId()) {
+            return $this->render('error/401.html.twig');
+        }
+
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $thumbnail = $form->get('thumbnail')->getData();
+            if ($thumbnail) {
+                $thumbnailName = $fileUploader->upload($thumbnail);
+                $post->setThumbnail($thumbnailName);
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('blog_index');
@@ -114,10 +123,12 @@ class BlogController extends AbstractController
      *
      * @return Response
      */
-    public function myCommentShow(PostRepository $postRepository): Response
+    public function myCommentShow(PostRepository $postRepository, CommentRepository $commentRepository): Response
     {
+
         return $this->render('admin/blog/my_comment_show.html.twig', [
-            'posts' => $postRepository->findByComment($this->getUser()->getId())
+            //'posts' => $postRepository->findByComment($this->getUser()->getId())
+            'comments' => $commentRepository->findBy(["author" => $this->getUser()])
         ]);
     }
 }

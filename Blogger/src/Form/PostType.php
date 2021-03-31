@@ -32,6 +32,7 @@ class PostType extends AbstractType
             ->add('title', TextType::class, [
                 'attr' => ['autofocus' => true, 'class' => 'form-control'],
                 'label' => 'Title',
+                'required' => true,
             ])
             ->add('summary', TextareaType::class, [
                 'label' => 'Summary',
@@ -57,7 +58,7 @@ class PostType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '2048k',
                         'mimeTypes' => [
                             'image/jpg',
                             'image/jpeg',

@@ -19,14 +19,6 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function findLatestBlog()
-    {
-        return $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'DESC')
-            ->getQuery()
-            ;
-    }
-
     /**
     * @return \Doctrine\ORM\Query Returns an array of Post objects
     */
@@ -53,27 +45,6 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'DESC')
             ->getQuery()
             ;
-    }
-
-    /**
-     * @param $value
-     * @return array|array[]
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
-    public function findByComment($value)
-    {
-        $conn = $this->getEntityManager()->getConnection();
-
-        $sql = '
-            SELECT DISTINCT post.*
-            FROM post
-            INNER JOIN comment ON comment.post_id = post.id
-            WHERE comment.author_id = :id';
-
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['id' => $value]);
-        return $stmt->fetchAllAssociative();
     }
 
     public function findByDistinctDate()

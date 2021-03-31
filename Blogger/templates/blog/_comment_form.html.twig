@@ -17,6 +17,6 @@
             </div>
         {{ form_end(form) }}
     {% else %}
-        Login or Register for posting comment to blog
+        <a href="{{ path('app_login') }}"><button class="btn btn-lg btn-block btn-success">Share Your Comment</button></a>
     {% endif %}
 </div>

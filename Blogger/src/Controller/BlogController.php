@@ -25,7 +25,7 @@ class BlogController extends AbstractController
         } else if ($request->query->has('month') && $request->query->has('year')) {
             $postBuilder = $postRepository->findByPublishDate($request->query->get('month') ?? null, $request->query->get('year') ?? null);
         } else {
-            $postBuilder = $postRepository->findLatestBlog();
+            $postBuilder = $postRepository->findBy(array(), array('id' => 'DESC'));
         }
         $pagination = $paginator->paginate(
             $postBuilder,
