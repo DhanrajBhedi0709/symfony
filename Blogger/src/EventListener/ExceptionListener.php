@@ -36,12 +36,12 @@
                 if($exception->getStatusCode() == 404){
                     $response->setContent($this->_engine->render('error/404.html.twig'));
                 } else {
-                    $response->setContent($this->_engine->render('error/error.html.twig', ['code' => $exception->getStatusCode()]));
+                    $response->setContent($this->_engine->render('error/error.html.twig', ['code' => $exception->getStatusCode(), 'msg' => $exception->getMessage()]));
                 }
                 $response->setStatusCode($exception->getStatusCode());
                 $response->headers->replace($exception->getHeaders());
             } else {
-                $response->setContent($this->_engine->render('error/error.html.twig', ['code' => Response::HTTP_INTERNAL_SERVER_ERROR]));
+                $response->setContent($this->_engine->render('error/error.html.twig', ['code' => Response::HTTP_INTERNAL_SERVER_ERROR, 'msg' => $exception->getMessage()]));
                 $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
             }
 

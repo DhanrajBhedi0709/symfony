@@ -30,7 +30,7 @@ class BlogController extends AbstractController
         $pagination = $paginator->paginate(
             $postBuilder,
             $request->query->getInt('page', 1),
-            4
+            $this->getParameter('page_size')
         );
         return $this->render('blog/index.html.twig', [
             'pagination' => $pagination,
