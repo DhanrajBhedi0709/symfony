@@ -20,38 +20,55 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, [
+            ->add(
+                'email',
+                EmailType::class,
+                [
                 'attr' => ['class' => 'form-control'],
-            ])
-            ->add('name', TextType::class, [
+                ]
+            )
+            ->add(
+                'name',
+                TextType::class,
+                [
                 'attr' => ['class' => 'form-control']
-            ])
-            ->add('password', RepeatedType::class, [
+                ]
+            )
+            ->add(
+                'password',
+                RepeatedType::class,
+                [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
 
                 'constraints' => [
-                    new NotBlank([
+                    new NotBlank(
+                        [
                         'message' => 'Please enter a password',
-                    ]),
-                    new Length([
+                        ]
+                    ),
+                    new Length(
+                        [
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
-                    ]),
+                        ]
+                    ),
                 ],
                 'required' => true,
                 'first_options'  => ['label' => 'Password', 'attr' => ['class' => 'form-control']],
                 'second_options' => ['label' => 'Repeat Password', 'attr' => ['class' => 'form-control']],
-            ])
-        ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class,
-        ]);
+            ]
+        );
     }
 }

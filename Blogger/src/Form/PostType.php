@@ -29,35 +29,55 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, [
+            ->add(
+                'title',
+                TextType::class,
+                [
                 'attr' => ['autofocus' => true, 'class' => 'form-control'],
                 'label' => 'Title',
                 'required' => true,
-            ])
-            ->add('summary', TextareaType::class, [
+                ]
+            )
+            ->add(
+                'summary',
+                TextareaType::class,
+                [
                 'label' => 'Summary',
                 'attr' => ['class' => 'form-control'],
-            ])
-            ->add('content', CKEditorType::class, [
+                ]
+            )
+            ->add(
+                'content',
+                CKEditorType::class,
+                [
                 'config' => array(
 
                     'showWordCount' => true
                 )
-            ])
-            ->add('tags',  ChoiceType::class, [
+                ]
+            )
+            ->add(
+                'tags',
+                ChoiceType::class,
+                [
                 'choices'  => [
                     'Travel' => 'travel',
                     'Technology' => 'technology',
                     'News' => 'news',
                 ],
                 'attr' => ['class' => 'form-control'],
-            ])
-            ->add('thumbnail', FileType::class, [
+                ]
+            )
+            ->add(
+                'thumbnail',
+                FileType::class,
+                [
                 'label' => 'Thumbnail Image',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new File([
+                    new File(
+                        [
                         'maxSize' => '2048k',
                         'mimeTypes' => [
                             'image/jpg',
@@ -65,23 +85,31 @@ class PostType extends AbstractType
                             'image/png',
                         ],
                         'mimeTypesMessage' => 'Please upload a valid jpg, jpeg, png Image',
-                    ])
+                        ]
+                    )
                 ],
-            ])
-            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-                /** @var Post */
-                $post = $event->getData();
-                if (null !== $postTitle = $post->getTitle()) {
-                    $post->setSlug($this->slugger->slug($postTitle)->lower());
+                ]
+            )
+            ->addEventListener(
+                FormEvents::SUBMIT,
+                function (FormEvent $event) {
+                    /**
+                * @var Post
+                */
+                    $post = $event->getData();
+                    if (null !== $postTitle = $post->getTitle()) {
+                        $post->setSlug($this->slugger->slug($postTitle)->lower());
+                    }
                 }
-            })
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Post::class,
-        ]);
+            ]
+        );
     }
 }

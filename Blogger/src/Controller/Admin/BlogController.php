@@ -8,6 +8,7 @@ use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class BlogController
- * @package App\Controller
+ *
+ * @package         App\Controller
  * @Route("/admin")
  *
  * @IsGranted("ROLE_USER")
@@ -26,17 +28,27 @@ class BlogController extends AbstractController
     /**
      * @Route("/", name="dashboard", methods={"GET"})
      */
-    public function index(PostRepository $postRepository): Response
+    public function index(Request $request, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
-        return $this->render('admin/blog/dashboard.html.twig', [
-            'posts' => $postRepository->findBy(['author' => $this->getUser()])
-        ]);
+        $postBuilder = $postRepository->findBy(['author' => $this->getUser()], ['id' => 'DESC']);
+
+        $pagination = $paginator->paginate(
+            $postBuilder,
+            $request->query->getInt('page', 1),
+            $this->getParameter('page_size')
+        );
+        return $this->render(
+            'admin/blog/dashboard.html.twig',
+            [
+                'posts' => $pagination
+            ]
+        );
     }
 
     /**
      * @Route("/new", name="admin_blog_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileUploader $fileUploader ): Response
+    public function new(Request $request, FileUploader $fileUploader): Response
     {
         $post = new Post();
         $post->setAuthor($this->getUser());
@@ -45,7 +57,6 @@ class BlogController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $thumbnail = $form->get('thumbnail')->getData();
             if ($thumbnail) {
                 $thumbnailName = $fileUploader->upload($thumbnail);
@@ -59,10 +70,13 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('blog_index');
         }
 
-        return $this->render('admin/blog/new.html.twig', [
+        return $this->render(
+            'admin/blog/new.html.twig',
+            [
             'post' => $post,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -70,9 +84,12 @@ class BlogController extends AbstractController
      */
     public function show(Post $post): Response
     {
-        return $this->render('admin/blog/show.html.twig', [
+        return $this->render(
+            'admin/blog/show.html.twig',
+            [
             'post' => $post,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -80,7 +97,7 @@ class BlogController extends AbstractController
      */
     public function edit(Request $request, Post $post, FileUploader $fileUploader): Response
     {
-        if($post->getAuthor()->getId() != $this->getUser()->getId()) {
+        if ($post->getAuthor()->getId() != $this->getUser()->getId()) {
             return $this->render('error/401.html.twig');
         }
 
@@ -98,10 +115,13 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('blog_index');
         }
 
-        return $this->render('admin/blog/edit.html.twig', [
+        return $this->render(
+            'admin/blog/edit.html.twig',
+            [
             'post' => $post,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -109,7 +129,7 @@ class BlogController extends AbstractController
      */
     public function delete(Request $request, Post $post): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $post->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($post);
             $entityManager->flush();
@@ -123,12 +143,21 @@ class BlogController extends AbstractController
      *
      * @return Response
      */
-    public function myCommentShow(PostRepository $postRepository, CommentRepository $commentRepository): Response
+    public function myCommentShow(Request $request, CommentRepository $commentRepository, PaginatorInterface $paginator): Response
     {
+        $postBuilder = $commentRepository->findBy(["author" => $this->getUser()], ['id' => 'DESC']);
 
-        return $this->render('admin/blog/my_comment_show.html.twig', [
-            //'posts' => $postRepository->findByComment($this->getUser()->getId())
-            'comments' => $commentRepository->findBy(["author" => $this->getUser()])
-        ]);
+        $pagination = $paginator->paginate(
+            $postBuilder,
+            $request->query->getInt('page', 1),
+            $this->getParameter('page_size')
+        );
+
+        return $this->render(
+            'admin/blog/my_comment_show.html.twig',
+            [
+                'comments' => $pagination
+            ]
+        );
     }
 }

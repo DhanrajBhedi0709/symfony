@@ -20,16 +20,15 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return \Doctrine\ORM\Query Returns an array of Post objects
-    */
+     * @return \Doctrine\ORM\Query Returns an array of Post objects
+     */
     public function findByCategory($value)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.tags LIKE :val')
-            ->setParameter('val', '%'.$value.'%')
+            ->setParameter('val', '%' . $value . '%')
             ->orderBy('p.id', 'DESC')
-            ->getQuery()
-        ;
+            ->getQuery();
     }
 
     /**
@@ -43,8 +42,7 @@ class PostRepository extends ServiceEntityRepository
             ->setParameter('month', $month)
             ->setParameter('year', $year)
             ->orderBy('p.id', 'DESC')
-            ->getQuery()
-            ;
+            ->getQuery();
     }
 
     public function findByDistinctDate()

@@ -32,16 +32,6 @@
         {% else %}
             <strong>No Post Found</strong>
         {% endif %}
+        <div style="text-align: center;">{{ knp_pagination_render(comments) }}</div>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent()}}
-    <script>
-        $( document ).ready(function() {
-            $( "#footer" ).css( "bottom", "0" );
-            $( "#footer" ).css( "position", "absolute" );
-            $( "#footer" ).css( "width", "100%" );
-        });
-    </script>
 {% endblock %}

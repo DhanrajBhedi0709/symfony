@@ -22,7 +22,7 @@ class BlogController extends AbstractController
     {
         if ($request->query->has('tag')) {
             $postBuilder = $postRepository->findByCategory(strtolower($request->query->get('tag'))) ?? null;
-        } else if ($request->query->has('month') && $request->query->has('year')) {
+        } elseif ($request->query->has('month') && $request->query->has('year')) {
             $postBuilder = $postRepository->findByPublishDate($request->query->get('month') ?? null, $request->query->get('year') ?? null);
         } else {
             $postBuilder = $postRepository->findBy(array(), array('id' => 'DESC'));
@@ -32,9 +32,12 @@ class BlogController extends AbstractController
             $request->query->getInt('page', 1),
             $this->getParameter('page_size')
         );
-        return $this->render('blog/index.html.twig', [
+        return $this->render(
+            'blog/index.html.twig',
+            [
             'pagination' => $pagination,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -42,9 +45,12 @@ class BlogController extends AbstractController
      */
     public function show(Request $request, Post $post): Response
     {
-        return $this->render('blog/show.html.twig', [
+        return $this->render(
+            'blog/show.html.twig',
+            [
             'post' => $post,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -72,18 +78,22 @@ class BlogController extends AbstractController
     {
         $form = $this->createForm(CommentType::class);
 
-        return $this->render('blog/_comment_form.html.twig', [
+        return $this->render(
+            'blog/_comment_form.html.twig',
+            [
             'post' => $post,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     public function renderBlogDate(PostRepository $postRepository)
     {
-        return $this->render('blog/filter_date.html.twig',[
+        return $this->render(
+            'blog/filter_date.html.twig',
+            [
             'dates' => $postRepository->findByDistinctDate()
-        ]);
+            ]
+        );
     }
-
-
 }

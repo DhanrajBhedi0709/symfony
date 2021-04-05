@@ -15,7 +15,7 @@
                     </div>
                     <h1>{{ post.title }}</h1>
                     <ul class="post-meta">
-{#                        <li><a href="">John Doe</a></li>#}
+                        <li>{{ post.author.name }}</li>
                         <li>{{ post.publishedAt ? post.publishedAt|date('d M Y') : '' }}</li>
 {#                        <li><i class="fa fa-comments"></i> 3</li>#}
 {#                        <li><i class="fa fa-eye"></i> 807</li>#}

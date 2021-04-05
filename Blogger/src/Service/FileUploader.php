@@ -7,33 +7,35 @@
     use Symfony\Component\String\Slugger\SluggerInterface;
     use Psr\Log\LoggerInterface;
 
-    class FileUploader
+class FileUploader
+{
+    private $slugger;
+    private $logger;
+
+    public function __construct(SluggerInterface $slugger, LoggerInterface $logger)
     {
-        private $slugger;
-
-        public function __construct(SluggerInterface $slugger)
-        {
-            $this->slugger = $slugger;
-        }
-
-        public function upload(UploadedFile $file, LoggerInterface $logger)
-        {
-            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $this->slugger->slug($originalFilename);
-            $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-
-            try {
-                $file->move('thumbnail', $fileName);
-            } catch (FileException $e) {
-                $logger->error("Logger => " .$e->getMessage() ." code => " . $e->getCode());
-                new \Exception("File cannot be uploaded");
-            }
-
-            return 'thumbnail/'.$fileName;
-        }
-
-        public function getTargetDirectory()
-        {
-            return $this->targetDirectory;
-        }
+        $this->slugger = $slugger;
+        $this->logger = $logger;
     }
+
+    public function upload(UploadedFile $file)
+    {
+        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeFilename = $this->slugger->slug($originalFilename);
+        $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+
+        try {
+            $file->move('thumbnail', $fileName);
+        } catch (FileException $e) {
+            $this->logger->error("Logger => " . $e->getMessage() . " code => " . $e->getCode());
+            new \Exception("File cannot be uploaded");
+        }
+
+        return 'thumbnail/' . $fileName;
+    }
+
+    public function getTargetDirectory()
+    {
+        return $this->targetDirectory;
+    }
+}
