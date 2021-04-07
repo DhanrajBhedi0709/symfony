@@ -6,17 +6,27 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * Class RegistrationFormType
+ * @package App\Form
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -60,9 +70,34 @@ class RegistrationFormType extends AbstractType
                 'first_options'  => ['label' => 'Password', 'attr' => ['class' => 'form-control']],
                 'second_options' => ['label' => 'Repeat Password', 'attr' => ['class' => 'form-control']],
                 ]
+            )
+            ->add(
+                'profileImage',
+                FileType::class,
+                [
+                    'label' => 'Profile Image',
+                    'mapped' => false,
+                    'required' => false,
+                    'constraints' => [
+                        new File(
+                            [
+                                'maxSize' => '2048k',
+                                'mimeTypes' => [
+                                    'image/jpg',
+                                    'image/jpeg',
+                                    'image/png',
+                                ],
+                                'mimeTypesMessage' => 'Please upload a valid jpg, jpeg, png Image',
+                            ]
+                        )
+                    ],
+                ]
             );
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(

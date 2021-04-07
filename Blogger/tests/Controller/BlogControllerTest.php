@@ -84,13 +84,13 @@ class BlogControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-//    public function testRenderCommentForm()
-//    {
-//        $postRepository = static::$container->get(PostRepository::class);
-//        $testPost = $postRepository->find(1);
-//        $response = $this->controller->renderCommentForm($testPost);
-//
-//        var_dump($response);
-//    }
+    public function testRenderCommentForm()
+    {
+        $testUser = static::$container->get(UserRepository::class)->findOneByEmail('dhanraj0709@gmail.com');
 
+        $this->client->loginUser($testUser);
+
+        $crawler = $this->client->request('GET','/blog/the-7-emails-you-should-send-every-week-to-get-ahead-in-your-career');
+        $this->assertEquals(1, $crawler->selectButton('Comment')->count());
+    }
 }

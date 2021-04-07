@@ -14,15 +14,20 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
+    /**
+     * PostRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
     }
 
     /**
-     * @return \Doctrine\ORM\Query Returns an array of Post objects
+     * @param string $value
+     * @return \Doctrine\ORM\Query
      */
-    public function findByCategory($value)
+    public function findByCategory(string $value)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.tags LIKE :val')
@@ -31,8 +36,11 @@ class PostRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
+
     /**
-     * @return Post[] Returns an array of Post objects
+     * @param $month
+     * @param $year
+     * @return \Doctrine\ORM\Query
      */
     public function findByPublishDate($month, $year)
     {
@@ -45,6 +53,9 @@ class PostRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
+    /**
+     * @return array|array[]
+     */
     public function findByDistinctDate()
     {
         $conn = $this->getEntityManager()->getConnection();

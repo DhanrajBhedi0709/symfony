@@ -7,9 +7,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Class SecurityController
+ * @package App\Controller
+ */
 class SecurityController extends AbstractController
 {
+
     /**
+     * login method is used to log in user in portal.
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     *
      * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -26,7 +36,10 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+
     /**
+     * logout method is used for logging out user from portal.
+     *
      * @Route("/logout", name="app_logout")
      */
     public function logout()

@@ -25,7 +25,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class BlogController extends AbstractController
 {
+
     /**
+     * index method is used for the displaying all the blog that are written by the user.
+     *
+     * @param Request $request
+     * @param PostRepository $postRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
+     *
      * @Route("/", name="dashboard", methods={"GET"})
      */
     public function index(Request $request, PostRepository $postRepository, PaginatorInterface $paginator): Response
@@ -45,7 +53,14 @@ class BlogController extends AbstractController
         );
     }
 
+
     /**
+     * new method is used for the publishing new blog by specific user.
+     *
+     * @param Request $request
+     * @param FileUploader $fileUploader
+     * @return Response
+     *
      * @Route("/new", name="admin_blog_new", methods={"GET","POST"})
      */
     public function new(Request $request, FileUploader $fileUploader): Response
@@ -79,7 +94,13 @@ class BlogController extends AbstractController
         );
     }
 
+
     /**
+     * show method is used for showing particular one blog.
+     *
+     * @param Post $post
+     * @return Response
+     *
      * @Route("/blog/{slug}", name="admin_blog_show", methods={"GET"})
      */
     public function show(Post $post): Response
@@ -92,7 +113,15 @@ class BlogController extends AbstractController
         );
     }
 
+
     /**
+     * edit method is used for the editing the existing blog of logged in user.
+     *
+     * @param Request $request
+     * @param Post $post
+     * @param FileUploader $fileUploader
+     * @return Response
+     *
      * @Route("/{id}/edit", name="admin_blog_edit", methods={"GET","POST"}, requirements={"id":"\d+"})
      */
     public function edit(Request $request, Post $post, FileUploader $fileUploader): Response
@@ -124,7 +153,14 @@ class BlogController extends AbstractController
         );
     }
 
+
     /**
+     * delete method is used for deleting particular one blog of logged in user.
+     *
+     * @param Request $request
+     * @param Post $post
+     * @return Response
+     *
      * @Route("/{id}", name="admin_blog_delete", methods={"POST"})
      */
     public function delete(Request $request, Post $post): Response
@@ -138,10 +174,16 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('dashboard');
     }
 
+
     /**
-     * @Route("/comment", name="admin_my_comment", methods={"GET"})
+     * myCommentShow method is used for showing the blog and comment on which logged in user commented.
      *
+     * @param Request $request
+     * @param CommentRepository $commentRepository
+     * @param PaginatorInterface $paginator
      * @return Response
+     *
+     * @Route("/comment", name="admin_my_comment", methods={"GET"})
      */
     public function myCommentShow(Request $request, CommentRepository $commentRepository, PaginatorInterface $paginator): Response
     {

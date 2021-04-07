@@ -14,18 +14,32 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use App\Service\FileUploader;
 use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * Class PostType
+ * @package App\Form
+ */
 class PostType extends AbstractType
 {
+    /**
+     * @var SluggerInterface
+     */
     private $slugger;
 
+    /**
+     * PostType constructor.
+     * @param SluggerInterface $slugger
+     */
     public function __construct(SluggerInterface $slugger)
     {
         $this->slugger = $slugger;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -93,17 +107,17 @@ class PostType extends AbstractType
             ->addEventListener(
                 FormEvents::SUBMIT,
                 function (FormEvent $event) {
-                    /**
-                * @var Post
-                */
                     $post = $event->getData();
                     if (null !== $postTitle = $post->getTitle()) {
-                        $post->setSlug($this->slugger->slug($postTitle)->lower());
+                        $post->setSlug($this->slugger->slug($postTitle)->lower() . '-' . uniqid());
                     }
                 }
             );
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(

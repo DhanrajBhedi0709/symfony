@@ -8,17 +8,41 @@
     use Twig\Environment;
     use Psr\Log\LoggerInterface;
 
+    /**
+     * Class ExceptionListener
+     * @package App\EventListener
+     */
 class ExceptionListener
 {
+    /**
+     * @var Environment
+     */
     private $_engine;
+
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
+    /**
+     * ExceptionListener constructor.
+     * @param Environment $engine
+     * @param LoggerInterface $logger
+     */
     public function __construct(Environment $engine, LoggerInterface $logger)
     {
         $this->_engine = $engine;
         $this->logger = $logger;
     }
 
+    /**
+     * onKernelException method is used for handling the exception generated in portal.
+     *
+     * @param ExceptionEvent $event
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function onKernelException(ExceptionEvent $event)
     {
         // You get the exception object from the received event
