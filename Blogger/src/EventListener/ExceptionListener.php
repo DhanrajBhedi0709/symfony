@@ -27,12 +27,12 @@ class ExceptionListener
     /**
      * ExceptionListener constructor.
      * @param Environment $engine
-     * @param LoggerInterface $logger
+     * @param LoggerInterface $appLogger
      */
-    public function __construct(Environment $engine, LoggerInterface $logger)
+    public function __construct(Environment $engine, LoggerInterface $appLogger)
     {
         $this->_engine = $engine;
-        $this->logger = $logger;
+        $this->logger = $appLogger;
     }
 
     /**

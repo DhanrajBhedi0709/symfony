@@ -1,0 +1,22 @@
+<div class="section-row">
+    <div class="section-title">
+        <h3 class="title">Leave a comment</h3>
+    </div>
+    {% if(app.user) %}
+        {{ form_start(form, {action: path('admin_comment_add', {'slug': post.slug})}) }}
+        <div class="row">
+            {{ form_errors(form) }}
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_widget(form.content, {attr: {rows: 10, class: 'input'}}) }}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" class="primary-button">Comment</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    {% else %}
+        <a href="{{ path('app_login') }}"><button class="btn btn-lg btn-block btn-success">Share Your Comment</button></a>
+    {% endif %}
+</div>

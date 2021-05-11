@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Comment;
 use App\Entity\Post;
+use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -81,6 +83,10 @@ class BlogController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Post Added Successfully'
+            );
 
             return $this->redirectToRoute('blog_index');
         }
@@ -140,6 +146,10 @@ class BlogController extends AbstractController
                 $post->setThumbnail($thumbnailName);
             }
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                'success',
+                'Post Edited Successfully'
+            );
 
             return $this->redirectToRoute('blog_index');
         }
@@ -169,6 +179,10 @@ class BlogController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($post);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Post Deleted Successfully'
+            );
         }
 
         return $this->redirectToRoute('dashboard');
@@ -199,6 +213,61 @@ class BlogController extends AbstractController
             'admin/blog/my_comment_show.html.twig',
             [
                 'comments' => $pagination
+            ]
+        );
+    }
+
+    /**
+     * addComment method is used for adding comment by logged in user to specific blog.
+     *
+     * @param Request $request
+     * @param Post $post
+     * @return Response
+     *
+     * @Route("/comment/{slug}/add", name="admin_comment_add", methods={"POST"})
+     */
+    public function addComment(Request $request, Post $post): Response
+    {
+        $comment = new Comment();
+        $comment->setAuthor($this->getUser());
+        $post->addComment($comment);
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Comment Saved Successfully'
+            );
+
+            return $this->redirectToRoute(
+                'admin_blog_show',
+                [
+                    'slug' => $post->getSlug(),
+                ]);
+        }
+    }
+
+    /**
+     * renderCommentForm method is used to rendering form in twig template.
+     *
+     * @param Post $post
+     * @return Response
+     */
+    public function renderCommentForm(Post $post): Response
+    {
+        $form = $this->createForm(CommentType::class);
+
+        return $this->render(
+            'admin/blog/_comment_form.html.twig',
+            [
+                'post' => $post,
+                'form' => $form->createView(),
             ]
         );
     }

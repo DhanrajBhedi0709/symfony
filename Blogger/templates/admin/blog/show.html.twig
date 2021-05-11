@@ -33,6 +33,7 @@
             <h3>{{ post.summary }}</h3>
             {{ post.content|raw }}
         </div>
+        {{ render(controller('App\\Controller\\Admin\\BlogController::renderCommentForm', {'id': post.id})) }}
         <div class="section-row">
             <div class="section-title">
                 <h3 class="title">{{ post.comments|length }} Comments</h3>
@@ -43,7 +44,7 @@
                     <!-- comment -->
                     <div class="media">
                         <div class="media-left">
-                            <img class="media-object" src=" {{ asset('img/avatar-2.jpg') }}" alt="">
+                            <img class="media-object" src=" {{ asset(comment.author.profileImage) }}" alt="">
                         </div>
                         <div class="media-body">
                             <div class="media-heading">

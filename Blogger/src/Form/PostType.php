@@ -88,7 +88,7 @@ class PostType extends AbstractType
                 [
                 'label' => 'Thumbnail Image',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File(
                         [

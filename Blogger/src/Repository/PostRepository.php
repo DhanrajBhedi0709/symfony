@@ -24,6 +24,8 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
+     * findByCategory method is used for finding the post with specific category.
+     *
      * @param string $value
      * @return \Doctrine\ORM\Query
      */
@@ -38,6 +40,8 @@ class PostRepository extends ServiceEntityRepository
 
 
     /**
+     * findByPublishDate method is used for finding post by specific month and year.
+     *
      * @param $month
      * @param $year
      * @return \Doctrine\ORM\Query
@@ -54,6 +58,8 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
+     * findByDistinctDate method is used for listing latest 12 month posts.
+     *
      * @return array|array[]
      */
     public function findByDistinctDate()

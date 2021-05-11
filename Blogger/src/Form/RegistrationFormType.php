@@ -77,7 +77,7 @@ class RegistrationFormType extends AbstractType
                 [
                     'label' => 'Profile Image',
                     'mapped' => false,
-                    'required' => false,
+                    'required' => true,
                     'constraints' => [
                         new File(
                             [

@@ -100,6 +100,11 @@ class BlogController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
+            $this->addFlash(
+                'success',
+                'Comment Saved Successfully'
+            );
+
             return $this->redirectToRoute("blog_show", ["slug" => $post->getSlug()]);
         }
     }
@@ -110,7 +115,7 @@ class BlogController extends AbstractController
      * @param Post $post
      * @return Response
      */
-    public function renderCommentForm(Post $post)
+    public function renderCommentForm(Post $post): Response
     {
         $form = $this->createForm(CommentType::class);
 
@@ -129,7 +134,7 @@ class BlogController extends AbstractController
      * @param PostRepository $postRepository
      * @return Response
      */
-    public function renderBlogDate(PostRepository $postRepository)
+    public function renderBlogDate(PostRepository $postRepository): Response
     {
         return $this->render(
             'blog/filter_date.html.twig',

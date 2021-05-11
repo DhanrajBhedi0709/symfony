@@ -17,12 +17,27 @@
 
         <link type="text/css" rel="stylesheet" href="{{ asset('css/style.css') }}" />
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.11/alertify.core.css" integrity="sha512-eZih0rne5vAjEWet1syNsU3LTj1TygGLuLq304xv+JZeaIqi1E1OCbYFD0YPMqhgqFYoOH28QJzJIj+wkVWm+A==" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.11/alertify.default.css" integrity="sha512-gtC67qBTEVKrwQGTwJt+CaryOv5lBcWBP90pZCLGj6UaqEUU6j9rcE/fxtjSRxysLHWEl4NOelFEcTVdDmCs9A==" crossorigin="anonymous" />
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.11/alertify.min.js" integrity="sha512-2R8JJ9GapQ1VCvcazWIP4F7rOrMs6mzorqtZlXpvakAU0O/iw4n90CFrmG9+BwI//xxtnHxb5rbpkIF2s6z39w==" crossorigin="anonymous"></script>
+
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     {% endblock %}
 </head>
 
 <body>
+    {% for message in app.flashes('success') %}
+        <script>
+            alertify.success('{{ message }}');
+        </script>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <script>
+            alertify.success('{{ message }}');
+        </script>
+    {% endfor %}
     <header id="header">
         {% block header %}
             <!-- NAV -->
